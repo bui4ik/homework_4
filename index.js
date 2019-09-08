@@ -10,8 +10,7 @@
 // stack.push(2);
 
 const app = new App();
+App.createLayout(['stack', 'queue','tree'], 'wrapper', app);
 
-App.createWrapper();
-App.createContainers(['stack', 'queue','tree'], 'wrapper');
-App.createButtons(['stack','queue', 'tree'], app);
+
 

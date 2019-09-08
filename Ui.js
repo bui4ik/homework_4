@@ -25,7 +25,13 @@ const drawButton = (names, app) =>{
         button.className = 'button-ui';
         button.id = `${el}-button`;
         button.innerText = el;
-        button.onclick = () => app.createForm(parentNode);
+        button.onclick = () => {
+            if (el === 'stack') {
+                app.createStackForm(parentNode)
+            } else if (el === 'queue') {
+                app.createQueueForm(parentNode)
+            }
+        };
         parentNode.append(button);
     })
 };
@@ -67,22 +73,35 @@ const drawInput = (id) =>{
 };
 
 // кнопка добавления элемента
-const drawPlusButton = (id) => {
+const drawPlusButton = (id, type) => {
     const plusBtn = document.createElement('button');
     plusBtn.className = 'small-button';
     plusBtn.id = `plus-btn-${id}`;
     plusBtn.innerText = '+';
-    const value = document.getElementById(`input-${id}`).value;
-    plusBtn.onclick = () => app.pushToStack(id,value);
+    plusBtn.onclick = () => {
+        if (type === 'stack') {
+            const value = document.getElementById(`input-${id}`).value;
+            app.pushToStack(id,value);
+        } else if (type === 'queue') {
+            const value = document.getElementById(`input-${id}`).value;
+            app.pushToQueue(id, value)
+        }
+    };
     document.getElementById(`form-${id}`).appendChild(plusBtn);
 };
 
 // кнопка удаления элемента
-const drawMinusButton = (id) => {
+const drawMinusButton = (id, type) => {
     const minBtn = document.createElement('button');
     minBtn.className = 'small-button';
     minBtn.id = `minus-btn-${id}`;
     minBtn.innerText = '-';
-    minBtn.onclick = () => app.popFromStack(id);
+    minBtn.onclick = () => {
+        if (type === 'stack') {
+            app.popFromStack(id);
+        } else if (type === 'queue'){
+            app.shiftFromStack(id)
+        }
+    };
     document.getElementById(`form-${id}`).appendChild(minBtn);
 };
