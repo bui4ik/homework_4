@@ -41,7 +41,7 @@ class App {
         }
         stack.on('popStackNode', onPopNode)
     }
-
+// создание форм очереди
     createQueueForm(parentNode){
         this.forms = this.forms + 1;
         const queueId = this.forms;
