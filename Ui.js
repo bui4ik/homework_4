@@ -7,7 +7,7 @@ const drawWrapper = () =>{
 };
 
 // контейнер для каждого типа структур
-const drawContainer = (names, parentNode) => {
+const drawContainers = (names, parentNode) => {
     const wrapper = document.getElementById(parentNode);
     names.map(el => {
         const container = document.createElement('div');
@@ -18,7 +18,7 @@ const drawContainer = (names, parentNode) => {
 };
 
 // кнопка для каждого типа структур
-const drawButton = (names, app) =>{
+const drawButtons = (names, forms) =>{
     names.map(el => {
         const parentNode = document.getElementById(`container-${el}`);
         const button = document.createElement('button');
@@ -27,9 +27,11 @@ const drawButton = (names, app) =>{
         button.innerText = el;
         button.onclick = () => {
             if (el === 'stack') {
-                app.createStackForm(parentNode)
+                forms.createStackForm(parentNode)
             } else if (el === 'queue') {
-                app.createQueueForm(parentNode)
+                forms.createQueueForm(parentNode)
+            } else if (el === 'tree') {
+                forms.createTreeForm(parentNode)
             }
         };
         parentNode.append(button);
@@ -37,11 +39,16 @@ const drawButton = (names, app) =>{
 };
 
 // форма
-const drawForm = (parentNode, id) => {
+const drawForm = (parentNode, id, type) => {
     const form = document.createElement('div');
     form.className = 'form';
     form.id = `form-${id}`;
     parentNode.appendChild(form);
+    drawCloseButton(id);
+    drawContentArea(id);
+    drawInput(id);
+    drawPlusButton(id, type);
+    drawMinusButton(id, type)
 };
 
 // кнопка удаления формы
@@ -85,6 +92,9 @@ const drawPlusButton = (id, type) => {
         } else if (type === 'queue') {
             const value = document.getElementById(`input-${id}`).value;
             app.pushToQueue(id, value)
+        } else if (type === 'tree') {
+            const value = document.getElementById(`input-${id}`).value;
+            app.addToTree(id, value)
         }
     };
     document.getElementById(`form-${id}`).appendChild(plusBtn);
@@ -101,6 +111,9 @@ const drawMinusButton = (id, type) => {
             app.popFromStack(id);
         } else if (type === 'queue'){
             app.shiftFromStack(id)
+        } else if (type === 'tree'){
+            const value = document.getElementById(`input-${id}`).value;
+            app.removeFromTree(id, value)
         }
     };
     document.getElementById(`form-${id}`).appendChild(minBtn);

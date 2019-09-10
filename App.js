@@ -8,23 +8,14 @@ class App {
 
     static createLayout(names, parentNode, app){
         drawWrapper();
-        drawContainer(names, parentNode);
-        drawButton(names, app);
+        drawContainers(names, parentNode);
+        drawButtons(names, app);
     };
-
-    static createFormFooter(id, type){
-        drawCloseButton(id);
-        drawContentArea(id);
-        drawInput(id);
-        drawPlusButton(id, type);
-        drawMinusButton(id, type)
-    };
-
+//создание форм стэка
     createStackForm(parentNode){
         this.forms = this.forms + 1;
         const stackId = this.forms;
-        drawForm(parentNode, stackId);
-        App.createFormFooter(stackId, 'stack');
+        drawForm(parentNode, stackId, 'stack');
         const stack = new Stack(stackId);
         this.stacks.push(stack);
         console.log(this.stacks);
@@ -45,8 +36,7 @@ class App {
     createQueueForm(parentNode){
         this.forms = this.forms + 1;
         const queueId = this.forms;
-        drawForm(parentNode, queueId);
-        App.createFormFooter(queueId, 'queue');
+        drawForm(parentNode, queueId, 'queue');
         const queue = new Queue(queueId);
         this.queues.push(queue);
         console.log(this.queues);
@@ -62,6 +52,30 @@ class App {
             StackNodeUI.removeQueueNodeUI(queueView);
         }
         queue.on('shiftQueueNode', onPopNode)
+    }
+
+    createTreeForm(parentNode){
+        this.forms = this.forms + 1;
+        const treeId = this.forms;
+        drawForm(parentNode, treeId, 'tree');
+        const tree = new BinarySearchTree(treeId);
+        this.trees.push(tree);
+        console.log(this.trees);
+        console.log(this.trees[0].root);
+
+        const treeView = document.getElementById(`content-${treeId}`);
+
+        function onNewTreeNode(value) {
+            StackNodeUI.addTreeNodeUI(treeView, value);
+        }
+        tree.on('newTreeNode', onNewTreeNode);
+
+        function onRemoveTreeNode(value) {
+            StackNodeUI.removeStackNodeUI(treeView, value);
+        }
+        tree.on('removeTreeNode', onRemoveTreeNode)
+
+
     }
 
     pushToStack(id, value){
@@ -86,6 +100,33 @@ class App {
         this.queues.map((el) => {
             el.id === id && el.shift();
         });
+    }
+
+    addToTree(id, value){
+        this.trees.map(el => {
+            el.id === id && el.insert(value);
+            console.log(el);
+            const breadthFirst = function (node) {
+                function bf(queue) {
+                    let newQueue = [];
+                    queue.forEach(function (node) {
+                        console.log(node.data);
+                        node.left && newQueue.push(node.left);
+                        node.right && newQueue.push(node.right);
+                    });
+                    newQueue.length && bf(newQueue);
+                }
+                bf([node]);
+            };
+
+            breadthFirst(el.root)
+        })
+    }
+
+    removeFromTree(id, value){
+        this.trees.map(el => {
+            el.id === id && el.remove(value)
+        })
     }
 }
 

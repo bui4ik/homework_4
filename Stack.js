@@ -12,7 +12,7 @@ class Stack extends EventEmitter{
 
     pop() {
         const value = this._values.pop();
-        this.emit('popStackNode', value);
+        this.emit('removeTreeNode', value);
     }
 }
 
@@ -50,6 +50,17 @@ const StackNodeUI = (function (docObj) {
         }
 
         static removeQueueNodeUI(parentNode) {
+            parentNode.lastChild ? parentNode.removeChild(parentNode.firstChild) : console.log('nothing to delete')
+        }
+
+        static addTreeNodeUI(parentNode, value){
+            this.nodeEl = docObj.createElement('div');
+            this.nodeEl.className = 'stack-node-ui';
+            this.nodeEl.innerText = value;
+            parentNode.append(this.nodeEl);
+        }
+
+        static removeTreeNodeUI(parentNode, value){
             parentNode.lastChild ? parentNode.removeChild(parentNode.firstChild) : console.log('nothing to delete')
         }
     }
