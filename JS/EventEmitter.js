@@ -1,13 +1,10 @@
 const EventEmitter = (function () {
    class EventEmitter {
        constructor() {
-           this.callbackStore = {/* [eventName]: [callback1, callback2]*/};
+           this.callbackStore = {};
        }
 
        on(eventName, callback) {
-           // if (!this.callbackStore[eventName]) {
-           //     this.callbackStore[eventName] = [];
-           // }
            this.callbackStore[eventName] = this.callbackStore[eventName] || [];
            this.callbackStore[eventName].push(callback);
            return this;
